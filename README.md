@@ -228,6 +228,7 @@
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.8);
       will-change: transform;
+      cursor: pointer;
     }
 
     .gallery-item:hover {
@@ -334,6 +335,41 @@
       color: #f5c542;
       margin-right: 6px;
     }
+
+    /* ----- LIGHTBOX (for gallery images) ----- */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 7, 10, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      cursor: zoom-out;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 95vw;
+      max-height: 90vh;
+      border-radius: 1.8rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+      border: 2px solid rgba(245, 197, 66, 0.3);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.8rem;
+      font-size: 2.2rem;
+      color: #ccd5e0;
+      cursor: pointer;
+      line-height: 1;
+      font-weight: 300;
+      transition: color 0.2s;
+    }
+    .lightbox-close:hover { color: #fff; }
 
     /* ----- RESPONSIVE (iOS optimized) ----- */
     @media (max-width: 700px) {
@@ -451,17 +487,6 @@
       outline-offset: 4px;
       border-radius: 4px;
     }
-
-    /* Placeholder fallback style */
-    .img-placeholder {
-      background: #252b35;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f5c542;
-      font-size: 2rem;
-      font-weight: 300;
-    }
   </style>
 </head>
 <body>
@@ -469,9 +494,9 @@
     <!-- ========== HEADER ========== -->
     <header class="portfolio-header">
       <div class="header-photo">
-        <!-- Replace with your actual photo (portrait works best) -->
+        <!-- Your main portrait photo -->
         <img 
-          src="https://placehold.co/400x400/1e222a/f5c542?text=Rajkumar+Photo" 
+          src="images/photo1.jpg" 
           alt="Muddasani Rajkumar portrait" 
           loading="eager"
         >
@@ -512,20 +537,26 @@
     <h2 class="section-title"><i class="fas fa-images"></i> Gallery</h2>
     <div class="gallery-grid">
       <!-- Replace each src with your own photos (square works best) -->
-      <div class="gallery-item">
-        <img src="https://placehold.co/600x600/1e222a/f5c542?text=Photo+1" alt="Portfolio photo 1" loading="lazy">
+      <div class="gallery-item" onclick="openLightbox('images/photo1.jpg')">
+        <img src="images/photo1.jpg" alt="Rajkumar in field" loading="lazy">
       </div>
-      <div class="gallery-item">
-        <img src="https://placehold.co/600x600/1e222a/f5c542?text=Photo+2" alt="Portfolio photo 2" loading="lazy">
+      <div class="gallery-item" onclick="openLightbox('images/photo2.jpg')">
+        <img src="images/photo2.jpg" alt="Rajkumar with orange sunglasses" loading="lazy">
       </div>
-      <div class="gallery-item">
-        <img src="https://placehold.co/600x600/1e222a/f5c542?text=Photo+3" alt="Portfolio photo 3" loading="lazy">
+      <div class="gallery-item" onclick="openLightbox('images/photo3.jpg')">
+        <img src="images/photo3.jpg" alt="Close up portrait" loading="lazy">
       </div>
-      <div class="gallery-item">
-        <img src="https://placehold.co/600x600/1e222a/f5c542?text=Photo+4" alt="Portfolio photo 4" loading="lazy">
+      <div class="gallery-item" onclick="openLightbox('images/photo4.jpg')">
+        <img src="images/photo4.jpg" alt="Rajkumar standing by pillar" loading="lazy">
       </div>
-      <div class="gallery-item">
-        <img src="https://placehold.co/600x600/1e222a/f5c542?text=Photo+5" alt="Portfolio photo 5" loading="lazy">
+      <div class="gallery-item" onclick="openLightbox('images/photo5.jpg')">
+        <img src="images/photo5.jpg" alt="Rajkumar outdoors with sky" loading="lazy">
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/photo6.jpg')">
+        <img src="images/photo6.jpg" alt="Moody portrait in red shirt" loading="lazy">
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/photo7.jpg')">
+        <img src="images/photo7.jpg" alt="Rajkumar with red sunglasses" loading="lazy">
       </div>
     </div>
 
@@ -557,5 +588,29 @@
       Muddasani Rajkumar · Actor & Assistant Director · Hyderabad
     </div>
   </div>
+
+  <!-- ========== LIGHTBOX OVERLAY ========== -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="lightbox-img" src="" alt="Preview">
+  </div>
+
+  <script>
+    function openLightbox(src) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
 </body>
 </html>
